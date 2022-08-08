@@ -1,7 +1,10 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { BlogsService } from 'src/blogs/blogs.service';
 
 @Controller('users')
 export class UsersController {
+  constructor(private blogService: BlogsService) {}
+
   @Get()
   find() {
     return 'Hayat';
@@ -13,7 +16,12 @@ export class UsersController {
   }
 
   @Get('blog-list')
-  blogList() {
-    return ' aaaaaa ';
+  async blogList(): Promise<any[]> {
+    return this.blogService.findData();
+  }
+
+  @Post('blog-add')
+  blogAdd(@Body() record: any) {
+    this.blogService.create(record);
   }
 }
